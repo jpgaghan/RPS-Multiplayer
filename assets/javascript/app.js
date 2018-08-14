@@ -98,7 +98,7 @@ database.ref().on("value", function (snapshot) {
     }
     else if (usersOnline === 2 && !snapshot.child("user2").exists()) {
         player = "user2"
-        database.ref("user2").update({
+        database.ref("user2").push({
             "name": username,
             "winCount": 0,
             "lossCount": 0,
@@ -106,7 +106,7 @@ database.ref().on("value", function (snapshot) {
             "choice": "",
         })
     }
-    if (usersOnline === 2 && snapshot.child("user2").exists()) {
+    if (usersOnline === 2 && user1Choice!=="" && user2Choice!=="") {
         user1Loss = snapshot.val()["user1"].lossCount;
         user2Loss = snapshot.val()["user2"].lossCount;
         user1Win = snapshot.val()["user1"].winCount;
@@ -146,6 +146,9 @@ database.ref().on("value", function (snapshot) {
                 }
             }
         }
+        else {alert("tiedusers")}
+        database.ref("user1").update({"choice": ""});
+        database.ref("user2").update({"choice": ""});
     };
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
