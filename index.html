@@ -28,7 +28,8 @@
 
         <div class="row justify-content-center">
             <div class="card xs-col-3" style="width: 18rem;">
-                    <div class="card-header">username</div>
+                <span id="chosen1" style="display: none;">Player 1 has made selection!</span>
+                <div class="card-header">player1</div>
                 <ul class="list-group list-group-flush">
                     <li id="rock" class="list-group-item choice1">
                         Rock
@@ -41,50 +42,61 @@
                     </li>
                 </ul>
             </div>
-            <div class="card text-white bg-primary" style="max-width: 18rem;">  
+            <div class="card text-white bg-primary" style="max-width: 18rem;">
                 <div class="card-body">
-                  <h5 class="card-title result">Let the Game Begin!</h5>
+                    <h5 class="card-title result">Let the Game Begin!</h5>
                 </div>
-              </div>
+            </div>
             <div class="card xs-col-3" style="width: 18rem;">
-                    <div class="card-header">username</div>
+                <span id="chosen2" style="display: none;">Player 2 has made selection!</span>
+                <div class="card-header">player2</div>
                 <ul class="list-group list-group-flush ">
-                    <li id = "rock" class="list-group-item choice2">
+                    <li id="rock" class="list-group-item choice2">
                         Rock
                     </li>
-                    <li id = "paper" class="list-group-item choice2">
+                    <li id="paper" class="list-group-item choice2">
                         Paper
                     </li>
-                    <li id = "scissors" class="list-group-item choice2">
+                    <li id="scissors" class="list-group-item choice2">
                         Scissors
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="row">
-            <form id="search-form" class="mx-auto m-3">
-                <label for="searchTerm">Search Term</label>
-                <input type="text" id="messagetext">
-                <input id="sendmessage" type="submit" value="Send">
-            </form>
+        <div class="row justify-content-center"> 
+            <div class="card xs-col-3" style="width: 18rem;">
+                <form id="search-form">
+                    <label for="searchTerm">Message</label>
+                    <input type="text" id="messagetext">
+                    <input id="sendmessage" type="submit" value="Send">
+                </form>
+            </div>
+            <div class="card xs-col-3" style="width: 18rem;">
+            </div>
+            <div class="card xs-col-3" style="width: 18rem;">
+                    <form id="search-form">
+                            <label for="searchTerm">Message</label>
+                            <input type="text" id="messagetext">
+                            <input id="sendmessage" type="submit" value="Send">
+                        </form>
+                </div>
         </div>
     </div>
     <div class="card">
         <div id="messenger" class="card-body">
-                <div class="alert alert-success" style = "height:35px;padding-top:8px;width:50%;Float:left;margin-left:10%;">
+            <div class="alert alert-success" style="height:35px;padding-top:8px;width:50%;Float:left;margin-left:10%;">
+                <span class="glyphicon glyphicon-ok"></span>
+                You successfully read this important alert message.
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <div class="alert alert-danger" style="height:35px;padding-top:8px;width:50%;Float:left;">
 
-                       <span class="glyphicon glyphicon-ok"></span> 
-                        
-                            You successfully read this important alert message.
-                    </div>
-                <br/><br/><br/>
-                
-                    <div class="alert alert-danger" style = "height:35px;padding-top:8px;width:50%;Float:left;">
-                    
-                        <span class="glyphicon glyphicon-exclamation-sign"></span> 
-                        
-                            Change a few things up and try submitting again.
-                    </div>
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+
+                Change a few things up and try submitting again.
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="assets/javascript/app.js"></script>

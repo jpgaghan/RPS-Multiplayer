@@ -85,6 +85,8 @@ database.ref().on("value", function (snapshot) {
     }
 
     if (choiceCount===2) {
+        $(".chosen2").hide();
+        $(".chosen1").hide();
         choiceCount=0;
         user1Choice = snapshot.val()["user1"].choice;
         user2Choice = snapshot.val()["user2"].choice;
@@ -183,6 +185,7 @@ $('#sendmessage').on('click', function () {
     // upon click of rock paper or scissors button it will send choice
     $(".choice1").on("click", function () {
         choiceCount++
+        $(".chosen1").show();
         option = this.id;
         database.ref('user1').update({"choice": option});
         // database.ref("/choice").update(option);
@@ -190,6 +193,7 @@ $('#sendmessage').on('click', function () {
 
     $(".choice2").on("click", function () {
         choiceCount++
+        $(".chosen2").show();
         option = this.id;
         database.ref('user2').update({"choice": option});
         // database.ref("/choice").update(option);
