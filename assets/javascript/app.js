@@ -6,9 +6,6 @@ var username = prompt("Enter your username")
 var usersOnline = 0;
 var player = "";
 var option = "";
-var user1Status = "logged off"
-var user1Status = "logged off"
-var gamesStatus = "ready to choose"
 var choiceCount = 0;
 
 
@@ -21,31 +18,11 @@ var choiceCount = 0;
     storageBucket: "rpsproj-ef229.appspot.com",
     messagingSenderId: "465370515105"
   };
-// var config = {
-//     apiKey: "AIzaSyB1HbHspvpdxMu-jvff11IvOFwvo1pCAqI",
-//     authDomain: "rps-multiplayer-2fd14.firebaseapp.com",
-//     databaseURL: "https://rps-multiplayer-2fd14.firebaseio.com",
-//     projectId: "rps-multiplayer-2fd14",
-//     storageBucket: "rps-multiplayer-2fd14.appspot.com",
-//     messagingSenderId: "1028415750332"
-// };
+
 
 firebase.initializeApp(config);
 
 var database = firebase.database();
-
-
-
-
-//   var theArray = [];
-
-//       var name = "John";
-//       var role = "role";
-//       var mRate = "3";
-//       var sDate = "4";
-//       database.ref().push(
-//           varPush
-//       );
 
 // connectionsRef references a specific location in our database.
 // All of our connections will be stored in this directory.
@@ -66,7 +43,7 @@ connectedRef.on("value", function (snap) {
         var con = connectionsRef.push(true);
         // Remove user from the connection list when they disconnect.
         con.onDisconnect().remove();
-        userRef2.onDisconnect().remove()
+        // userRef2.onDisconnect().remove()
     }
 });
 
@@ -99,7 +76,6 @@ database.ref().on("value", function (snapshot) {
     }
     else if (usersOnline === 2 && !snapshot.child("user2").exists()) {
         player = "user2"
-        gamesStatus="ready to choose"
         database.ref("user2").update({
             "name": username,
             "winCount": 0,
@@ -121,6 +97,7 @@ database.ref().on("value", function (snapshot) {
             if (user1Choice === "scissors") {
                 if (user2Choice === "paper") {
                     user1Win++ , user2Loss++
+                    $(".result").text("Player 1 Wins!");    
                     database.ref("user1").update({
                         winCount: user1Win,
                     })
@@ -130,6 +107,7 @@ database.ref().on("value", function (snapshot) {
                 }
                 else if (user2Choice === "rock") {
                     user2Win++ , user1Loss++
+                    $(".result").text("Player 2 Wins!");
                     database.ref("user2").update({
                         winCount: user2Win,
                     })
@@ -142,6 +120,7 @@ database.ref().on("value", function (snapshot) {
 
                 if (user2Choice === "paper") {
                     user2Win++ , user1Loss++
+                    $(".result").text("Player 2 Wins!");
                     database.ref("user2").update({
                         winCount: user2Win,
                     })
@@ -151,6 +130,7 @@ database.ref().on("value", function (snapshot) {
                 }
                 else if (user2Choice === "scissors") {
                     user1Win++ , user2Loss++
+                    $(".result").text("Player 1 Wins!");
                     database.ref("user1").update({
                         winCount: user1Win,
                     })
@@ -162,6 +142,7 @@ database.ref().on("value", function (snapshot) {
             else if (user1Choice === "paper") {
                 if (user2Choice === "scissors") {
                     user1Loss++ , user2Win++
+                    $(".result").text("Player 2 Wins!");
                     database.ref("user2").update({
                         winCount: user2Win,
                     })
@@ -171,6 +152,7 @@ database.ref().on("value", function (snapshot) {
                 }
                 else if (user2Choice === "rock") {
                     user1Win++ , user2Loss++
+                    $(".result").text("Player 1 Wins!");
                     database.ref("user1").update({
                         winCount: user1Win,
                     })
@@ -180,9 +162,7 @@ database.ref().on("value", function (snapshot) {
                 }
             }
         }
-        else {alert("tiedusers")
-        // database.ref("user1").update({"choice": "nothing"});
-        // database.ref("user2").update({"choice": "nothing"});
+        else {$(".result").text("You Tied!");
     }
     };
 }, function (errorObject) {
