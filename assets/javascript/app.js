@@ -146,9 +146,10 @@ database.ref().on("value", function (snapshot) {
                 }
             }
         }
-        else {alert("tiedusers")}
+        else {alert("tiedusers")
         database.ref("user1").update({"choice": ""});
         database.ref("user2").update({"choice": ""});
+    }
     };
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
