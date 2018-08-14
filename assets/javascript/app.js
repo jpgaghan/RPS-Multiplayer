@@ -43,7 +43,7 @@ connectedRef.on("value", function (snap) {
         var con = connectionsRef.push(true);
         // Remove user from the connection list when they disconnect.
         con.onDisconnect().remove();
-        // userRef2.onDisconnect().remove()
+        userRef2.onDisconnect().remove()
     }
 });
 
@@ -65,7 +65,7 @@ connectionsRef.on("child_removed", function (snap) {
 
 
 database.ref().on("value", function (snapshot) {
-    if (usersOnline === 1) {
+    if (usersOnline === 1 && !snapshot.child("user1").exists()) {
         player = "user1"
         database.ref("user1").update({
             "name": username,
