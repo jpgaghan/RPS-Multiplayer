@@ -6,6 +6,10 @@ var username = prompt("Enter your username")
 var usersOnline = 0;
 var player = "";
 var option = "";
+var user1Status = "logged off"
+var user1Status = "logged off"
+var gamesStatus = "ready to choose"
+var choiceCount = 0;
 
 
   // Initialize Firebase
@@ -39,11 +43,6 @@ var database = firebase.database();
 //       var role = "role";
 //       var mRate = "3";
 //       var sDate = "4";
-var varPush = {
-    name: username,
-    choice: "nothing",
-    message: "",
-};
 //       database.ref().push(
 //           varPush
 //       );
@@ -83,15 +82,7 @@ connectionsRef.on("child_removed", function (snap) {
         "winCount": 0,
         "lossCount": 0,
         "message": "",
-        "choice": "",
     })
-    if (userCount === 1) {
-        userRef2.onDisconnect().remove()
-    }
-    if (userCount === 0) {
-        userRef1.onDisconnect().remove()
-    }
-
 })
 
 
@@ -104,62 +95,94 @@ database.ref().on("value", function (snapshot) {
             "winCount": 0,
             "lossCount": 0,
             "message": "",
-            "choice": "",
         })
     }
     else if (usersOnline === 2 && !snapshot.child("user2").exists()) {
         player = "user2"
+        gamesStatus="ready to choose"
         database.ref("user2").update({
             "name": username,
             "winCount": 0,
             "lossCount": 0,
             "message": "",
-            "choice": "",
         })
     }
-    if (usersOnline === 2 && user1Choice!=="" && user2Choice!=="") {
+
+    if (choiceCount===2) {
+        choiceCount=0;
+        user1Choice = snapshot.val()["user1"].choice;
+        user2Choice = snapshot.val()["user2"].choice;
         user1Loss = snapshot.val()["user1"].lossCount;
         user2Loss = snapshot.val()["user2"].lossCount;
         user1Win = snapshot.val()["user1"].winCount;
         user2Win = snapshot.val()["user2"].winCount;
-        user1Choice = snapshot.val()["user1"].choice;
-        user2Choice = snapshot.val()["user2"].choice;
+        
         if (user1Choice !== user2Choice) {
             if (user1Choice === "scissors") {
                 if (user2Choice === "paper") {
                     user1Win++ , user2Loss++
-                    player1Win(user1Win, user2Loss);
+                    database.ref("user1").update({
+                        winCount: user1Win,
+                    })
+                    database.ref("user2").update({
+                        lossCount: user2Loss,
+                    })
                 }
                 else if (user2Choice === "rock") {
                     user2Win++ , user1Loss++
-                    player2Win(user2Win, user1Loss);
+                    database.ref("user2").update({
+                        winCount: user2Win,
+                    })
+                    database.ref("user1").update({
+                        lossCount: user1Loss,
+                    })
                 }
             }
             else if (user1Choice === "rock") {
 
                 if (user2Choice === "paper") {
                     user2Win++ , user1Loss++
-                    player2Win(user2Win, user1Loss);
+                    database.ref("user2").update({
+                        winCount: user2Win,
+                    })
+                    database.ref("user1").update({
+                        lossCount: user1Loss,
+                    })
                 }
                 else if (user2Choice === "scissors") {
                     user1Win++ , user2Loss++
-                    player1Win(user1Win, user2Loss);
+                    database.ref("user1").update({
+                        winCount: user1Win,
+                    })
+                    database.ref("user2").update({
+                        lossCount: user2Loss,
+                    })
                 }
             }
             else if (user1Choice === "paper") {
                 if (user2Choice === "scissors") {
                     user1Loss++ , user2Win++
-                    player2Win(user2Win, user1Loss);
+                    database.ref("user2").update({
+                        winCount: user2Win,
+                    })
+                    database.ref("user1").update({
+                        lossCount: user1Loss,
+                    })
                 }
                 else if (user2Choice === "rock") {
                     user1Win++ , user2Loss++
-                    player2Win(user1Win, user2Loss);
+                    database.ref("user1").update({
+                        winCount: user1Win,
+                    })
+                    database.ref("user2").update({
+                        lossCount: user2Loss,
+                    })
                 }
             }
         }
         else {alert("tiedusers")
-        database.ref("user1").update({"choice": ""});
-        database.ref("user2").update({"choice": ""});
+        // database.ref("user1").update({"choice": "nothing"});
+        // database.ref("user2").update({"choice": "nothing"});
     }
     };
 }, function (errorObject) {
@@ -178,30 +201,16 @@ $('#sendmessage').on('click', function () {
 
 }),
     // upon click of rock paper or scissors button it will send choice
-    $(".choice").on("click", function () {
+    $(".choice1").on("click", function () {
+        choiceCount++
         option = this.id;
-        database.ref(player).update({"choice": option});
+        database.ref('user1').update({"choice": option});
         // database.ref("/choice").update(option);
     });
 
-function player1Win(user1Win, user2Loss) {
-    database.ref("user1").update({
-        winCount: user1Win,
-        choice: "",
-    })
-    database.ref("user2").update({
-        lossCount: user2Loss,
-        choice: "",
-    })
-}
-
-function player2Win(user2Win, user1Loss) {
-    database.ref("user2").update({
-        winCount: use2Win,
-        choice: "",
-    })
-    database.ref("user1").update({
-        lossCount: user1Loss,
-        choice: "",
-    })
-}
+    $(".choice2").on("click", function () {
+        choiceCount++
+        option = this.id;
+        database.ref('user2').update({"choice": option});
+        // database.ref("/choice").update(option);
+    });
