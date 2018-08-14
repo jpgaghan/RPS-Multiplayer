@@ -40,7 +40,6 @@ var varPush = {
 // connectionsRef references a specific location in our database.
 // All of our connections will be stored in this directory.
 var connectionsRef = database.ref("/connections");
-var userRef1 = database.ref("/user1");
 var userRef2 = database.ref("/user2");
 var doubleRun = 0
 // '.info/connected' is a special location provided by Firebase that is updated
