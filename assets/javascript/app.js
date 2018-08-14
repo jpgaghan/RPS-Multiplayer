@@ -40,8 +40,8 @@ var varPush = {
 // connectionsRef references a specific location in our database.
 // All of our connections will be stored in this directory.
 var connectionsRef = database.ref("/connections");
-var fuckme = database.ref("/user1");
-var fuckme2 = database.ref("/user2");
+var userRef1 = database.ref("/user1");
+var userRef2 = database.ref("/user2");
 var doubleRun = 0
 // '.info/connected' is a special location provided by Firebase that is updated
 // every time the client's connection state changes.
@@ -74,12 +74,12 @@ connectionsRef.on("child_removed", function (snap) {
         "message": "",
         "choice": "",
     })
-    if (usersOnline===1) {
-        connectedRef.child("user2").child(key).remove();
-}
-if (usersOnline===0) {
-    connectedRef.child("user1").child(key).remove();
-}
+    if (userCount === 1) {
+        userRef2.onDisconnect().remove()
+    }
+    if (userCount === 0) {
+        userRef1.onDisconnect().remove()
+    }
 
 })
 
@@ -98,7 +98,7 @@ database.ref().on("value", function (snapshot) {
     }
     else if (usersOnline === 2 && !snapshot.child("user2").exists()) {
         player = "user2"
-        database.ref("user2").push({
+        database.ref("user2").update({
             "name": username,
             "winCount": 0,
             "lossCount": 0,
