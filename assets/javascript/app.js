@@ -6,14 +6,25 @@ var username = prompt("Enter your username")
 var usersOnline = 0;
 var player = "";
 var option = "";
-var config = {
-    apiKey: "AIzaSyB1HbHspvpdxMu-jvff11IvOFwvo1pCAqI",
-    authDomain: "rps-multiplayer-2fd14.firebaseapp.com",
-    databaseURL: "https://rps-multiplayer-2fd14.firebaseio.com",
-    projectId: "rps-multiplayer-2fd14",
-    storageBucket: "rps-multiplayer-2fd14.appspot.com",
-    messagingSenderId: "1028415750332"
-};
+
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBE9TawlTWYb8sNpbc6KfH7aPDVQMM5-Kk",
+    authDomain: "rpsproj-ef229.firebaseapp.com",
+    databaseURL: "https://rpsproj-ef229.firebaseio.com",
+    projectId: "rpsproj-ef229",
+    storageBucket: "rpsproj-ef229.appspot.com",
+    messagingSenderId: "465370515105"
+  };
+// var config = {
+//     apiKey: "AIzaSyB1HbHspvpdxMu-jvff11IvOFwvo1pCAqI",
+//     authDomain: "rps-multiplayer-2fd14.firebaseapp.com",
+//     databaseURL: "https://rps-multiplayer-2fd14.firebaseio.com",
+//     projectId: "rps-multiplayer-2fd14",
+//     storageBucket: "rps-multiplayer-2fd14.appspot.com",
+//     messagingSenderId: "1028415750332"
+// };
 
 firebase.initializeApp(config);
 
@@ -40,13 +51,13 @@ var varPush = {
 // connectionsRef references a specific location in our database.
 // All of our connections will be stored in this directory.
 var connectionsRef = database.ref("/connections");
-var userRef2 = database.ref("/user2");
+
 var doubleRun = 0
 // '.info/connected' is a special location provided by Firebase that is updated
 // every time the client's connection state changes.
 // '.info/connected' is a boolean value, true if the client is connected and false if they are not.
 var connectedRef = database.ref(".info/connected");
-
+var userRef2 = database.ref("/user2");
 // When the client's connection state changes...
 connectedRef.on("value", function (snap) {
 
