@@ -42,6 +42,7 @@ connectedRef.on("value", function (snap) {
     // If they are connected..
     if (snap.val()) {
         // Add user to the connections list.
+        database.ref("choicecount").set(0)
         var con = connectionsRef.push(true);
         // Remove user from the connection list when they disconnect.
         con.onDisconnect().remove();
@@ -91,11 +92,12 @@ database.ref().on("value", function (snapshot) {
         $("#choose2").show();
         $("#choose1").show();
     }
-    if (choiceCount===1) {
+    if (snapshot.val()["user1"].choice!=="nothing" || snapshot.val()["user2"].choice!=="nothing") {
         $(playerchoose).hide();
         $(playerchosen).show();
     }
-    if (choiceCount===2) {
+    if (snapshot.val()["user1"].choice!=="nothing" && snapshot.val()["user2"].choice!=="nothing") {
+        
         $("#chosen2").hide();
         $("#chosen1").hide();
         $("#choose1").show();
@@ -107,7 +109,8 @@ database.ref().on("value", function (snapshot) {
         user2Loss = snapshot.val()["user2"].lossCount;
         user1Win = snapshot.val()["user1"].winCount;
         user2Win = snapshot.val()["user2"].winCount;
-        
+        database.ref('user2').update({"choice": "nothing"});
+        database.ref('user1').update({"choice": "nothing"});
         if (user1Choice !== user2Choice) {
             if (user1Choice === "scissors") {
                 if (user2Choice === "paper") {
@@ -208,9 +211,9 @@ $('#sendmessage').on('click', function () {
     });
 
     $(".choice2").on("click", function () {
-        choiceCount++
         playerchoose = "#choose2"
         playerchosen = "#chosen2"
+        choiceCount++
         $("#chosen2").show();
         $("#choose2").hide();
         option = this.id;
