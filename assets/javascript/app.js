@@ -4,6 +4,8 @@
 // TODO: Replace with your project's customized code snippet
 var username = prompt("Enter your username")
 var usersOnline = 0;
+var playerchoose = "";
+var playerchosen = "";
 var player = "";
 var option = "";
 var choiceCount = 0;
@@ -73,6 +75,8 @@ database.ref().on("value", function (snapshot) {
             "lossCount": 0,
             "message": "",
         })
+        $("#connect1").hide();
+        $("#choose1").show();
     }
     else if (usersOnline === 2 && !snapshot.child("user2").exists()) {
         player = "user2"
@@ -82,11 +86,20 @@ database.ref().on("value", function (snapshot) {
             "lossCount": 0,
             "message": "",
         })
+        $("#connect2").hide();
+        $("#connect1").hide();
+        $("#choose2").show();
+        $("#choose1").show();
     }
-
+    if (choiceCount===1) {
+        $(playerchoose).hide();
+        $(playerchosen).show();
+    }
     if (choiceCount===2) {
-        $(".chosen2").hide();
-        $(".chosen1").hide();
+        $("#chosen2").hide();
+        $("#chosen1").hide();
+        $("#choose1").show();
+        $("#choose2").show();
         choiceCount=0;
         user1Choice = snapshot.val()["user1"].choice;
         user2Choice = snapshot.val()["user2"].choice;
@@ -185,7 +198,10 @@ $('#sendmessage').on('click', function () {
     // upon click of rock paper or scissors button it will send choice
     $(".choice1").on("click", function () {
         choiceCount++
-        $(".chosen1").show();
+        playerchoose = "#choose1"
+        playerchosen = "#chosen1"
+        $("#chosen1").show();
+        $("#choose1").hide();
         option = this.id;
         database.ref('user1').update({"choice": option});
         // database.ref("/choice").update(option);
@@ -193,7 +209,10 @@ $('#sendmessage').on('click', function () {
 
     $(".choice2").on("click", function () {
         choiceCount++
-        $(".chosen2").show();
+        playerchoose = "#choose2"
+        playerchosen = "#chosen2"
+        $("#chosen2").show();
+        $("#choose2").hide();
         option = this.id;
         database.ref('user2').update({"choice": option});
         // database.ref("/choice").update(option);
