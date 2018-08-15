@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- firebase link -->
-    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
     <!--Bootstrap links-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
@@ -28,9 +28,10 @@
 
         <div class="row justify-content-center">
             <div class="card xs-col-3" style="width: 18rem;">
-                <span id="chosen1" style="display: none;">Player 1 has made selection!</span>
                 <div class="card-header">player1</div>
-                <ul class="list-group list-group-flush">
+                <div id="connect1">Awaiting Connection</div>
+                <span id="chosen1" style = "display: none;">Player 1 has made selection!</span>
+                <ul id ="choose1" style = "display: none;" class="list-group list-group-flush">
                     <li id="rock" class="list-group-item choice1">
                         Rock
                     </li>
@@ -48,9 +49,10 @@
                 </div>
             </div>
             <div class="card xs-col-3" style="width: 18rem;">
-                <span id="chosen2" style="display: none;">Player 2 has made selection!</span>
                 <div class="card-header">player2</div>
-                <ul class="list-group list-group-flush ">
+                <div id="connect2">Awaiting Connection</div>
+                <span id="chosen2" style="display: none;">Player 2 has made selection!</span>
+                <ul id ="choose2" style = "display: none;" class="list-group list-group-flush ">
                     <li id="rock" class="list-group-item choice2">
                         Rock
                     </li>
@@ -63,7 +65,7 @@
                 </ul>
             </div>
         </div>
-        <!-- <div class="row justify-content-center">
+        <div class="row justify-content-center"> 
             <div class="card xs-col-3" style="width: 18rem;">
                 <form id="search-form">
                     <label for="searchTerm">Message</label>
@@ -74,16 +76,16 @@
             <div class="card xs-col-3" style="width: 18rem;">
             </div>
             <div class="card xs-col-3" style="width: 18rem;">
-                <form id="search-form">
-                    <label for="searchTerm">Message</label>
-                    <input type="text" id="messagetext">
-                    <input id="sendmessage" type="submit" value="Send">
-                </form>
-            </div>
+                    <form id="search-form">
+                            <label for="searchTerm">Message</label>
+                            <input type="text" id="messagetext">
+                            <input id="sendmessage" type="submit" value="Send">
+                        </form>
+                </div>
         </div>
     </div>
     <div class="card">
-        <div id="messenger" class="card-body">
+        <!-- <div id="messenger" class="card-body">
             <div class="alert alert-success" style="height:35px;padding-top:8px;width:50%;Float:left;margin-left:10%;">
                 <span class="glyphicon glyphicon-ok"></span>
                 You successfully read this important alert message.

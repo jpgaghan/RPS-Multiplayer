@@ -2,6 +2,8 @@
 // TODO: Replace with your project's customized code snippet
 var username = prompt("Enter your username")
 var usersOnline = 0;
+var playerchoose = "";
+var playerchosen = "";
 var player = "";
 var option = "";
 var choiceCount = 0;
@@ -38,6 +40,7 @@ connectedRef.on("value", function (snap) {
     // If they are connected..
     if (snap.val()) {
         // Add user to the connections list.
+        database.ref("choicecount").set(0)
         var con = connectionsRef.push(true);
         // Remove user from the connection list when they disconnect.
         con.onDisconnect().remove();
@@ -57,34 +60,52 @@ connectionsRef.on("child_removed", function (snap) {
         "winCount": 0,
         "lossCount": 0,
         "message": "",
+        "choice": "nothing"
     })
 })
 
 
-
 database.ref().on("value", function (snapshot) {
+    if (usersOnline ===2 && snapshot.val()["user1"].choice !=="nothing" && snapshot.val()["user2"].choice !=="nothing") {
+        choiceCount=2
+    }
     if (usersOnline === 1 && !snapshot.child("user1").exists()) {
         player = "user1"
-        database.ref("user1").update({
+        database.ref("user1").set({
             "name": username,
             "winCount": 0,
             "lossCount": 0,
             "message": "",
+            "choice": "nothing"
         })
+        $("#connect1").hide();
+        $("#choose1").show();
     }
     else if (usersOnline === 2 && !snapshot.child("user2").exists()) {
         player = "user2"
-        database.ref("user2").update({
+        database.ref("user2").set({
             "name": username,
             "winCount": 0,
             "lossCount": 0,
             "message": "",
+            "choice": "nothing"
         })
+        $("#connect2").hide();
+        $("#connect1").hide();
+        $("#choose2").show();
+        $("#choose1").show();
     }
-
-    if (choiceCount===2) {
-        $(".chosen2").hide();
-        $(".chosen1").hide();
+    if (choiceCount===1) {
+        choiceCount=1
+        $(playerchoose).hide();
+        $(playerchosen).show();
+    }
+    if (choiceCount===2 && snapshot.child("user2").exists()) {
+        choiceCount=2
+        $("#chosen2").hide();
+        $("#chosen1").hide();
+        $("#choose1").show();
+        $("#choose2").show();
         choiceCount=0;
         user1Choice = snapshot.val()["user1"].choice;
         user2Choice = snapshot.val()["user2"].choice;
@@ -92,7 +113,8 @@ database.ref().on("value", function (snapshot) {
         user2Loss = snapshot.val()["user2"].lossCount;
         user1Win = snapshot.val()["user1"].winCount;
         user2Win = snapshot.val()["user2"].winCount;
-        
+        database.ref('user2').update({"choice": "nothing"});
+        database.ref('user1').update({"choice": "nothing"});
         if (user1Choice !== user2Choice) {
             if (user1Choice === "scissors") {
                 if (user2Choice === "paper") {
@@ -183,15 +205,21 @@ $('#sendmessage').on('click', function () {
     // upon click of rock paper or scissors button it will send choice
     $(".choice1").on("click", function () {
         choiceCount++
-        $(".chosen1").show();
+        playerchoose = "#choose1"
+        playerchosen = "#chosen1"
+        $("#chosen1").show();
+        $("#choose1").hide();
         option = this.id;
         database.ref('user1').update({"choice": option});
         // database.ref("/choice").update(option);
     });
 
     $(".choice2").on("click", function () {
+        playerchoose = "#choose2"
+        playerchosen = "#chosen2"
         choiceCount++
-        $(".chosen2").show();
+        $("#chosen2").show();
+        $("#choose2").hide();
         option = this.id;
         database.ref('user2').update({"choice": option});
         // database.ref("/choice").update(option);
