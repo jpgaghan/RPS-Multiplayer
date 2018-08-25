@@ -212,20 +212,10 @@ $('#sendmessage').on('click', function () {
         choiceCount++
         option = this.id;
         database.ref('user1').update({"choice": option});
-        // database.ref("/choice").update(option);
     });
 
     $(".choice2").on("click", function () {
         choiceCount++
         option = this.id;
         database.ref('user2').update({"choice": option});
-        // database.ref("/choice").update(option);
     });
-
-    // database.ref("/playerchosen").on('child_added', function (snapshot) {
-    //     if ($(playerchoose).is(':visible')) {
-    //         $(playerchoose).hide();
-    //         $(playerchosen).show();
-    //     } else {$(playerchosen).hide();
-    //         $(playerchoose).show();}
-    // });
