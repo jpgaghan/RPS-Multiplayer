@@ -27,8 +27,6 @@ var database = firebase.database();
 // connectionsRef references a specific location in our database.
 // All of our connections will be stored in this directory.
 var connectionsRef = database.ref("/connections");
-
-var doubleRun = 0
 // '.info/connected' is a special location provided by Firebase that is updated
 // every time the client's connection state changes.
 // '.info/connected' is a boolean value, true if the client is connected and false if they are not.
@@ -64,11 +62,25 @@ connectionsRef.on("child_removed", function (snap) {
     })
 })
 
+database.ref("user1/choice").on("value", function (snapshot) {
+    if ((choiceCount !== 0 || choiceCount !==2) && snapshot.val() !== "nothing" ) {
+    $("#choose1").hide();    
+    $("#chosen1").show();
+}
+});
+
+database.ref("user2/choice").on("value", function (snapshot) {
+    if ((choiceCount !== 0 || choiceCount !==2) && snapshot.val() !== "nothing" && snapshot.val() !== null) {
+    $("#choose2").hide();    
+    $("#chosen2").show();
+    }
+});
 
 database.ref().on("value", function (snapshot) {
     if (usersOnline ===2 && snapshot.val()["user1"].choice !=="nothing" && snapshot.val()["user2"].choice !=="nothing") {
         choiceCount=2
     }
+
     if (usersOnline === 1 && !snapshot.child("user1").exists()) {
         player = "user1"
         database.ref("user1").set({
@@ -78,8 +90,6 @@ database.ref().on("value", function (snapshot) {
             "message": "",
             "choice": "nothing"
         })
-        $("#connect1").hide();
-        $("#choose1").show();
     }
     else if (usersOnline === 2 && !snapshot.child("user2").exists()) {
         player = "user2"
@@ -94,11 +104,6 @@ database.ref().on("value", function (snapshot) {
         $("#connect1").hide();
         $("#choose2").show();
         $("#choose1").show();
-    }
-    if (choiceCount===1) {
-        choiceCount=1
-        $(playerchoose).hide();
-        $(playerchosen).show();
     }
     if (choiceCount===2 && snapshot.child("user2").exists()) {
         choiceCount=2
@@ -205,22 +210,22 @@ $('#sendmessage').on('click', function () {
     // upon click of rock paper or scissors button it will send choice
     $(".choice1").on("click", function () {
         choiceCount++
-        playerchoose = "#choose1"
-        playerchosen = "#chosen1"
-        $("#chosen1").show();
-        $("#choose1").hide();
         option = this.id;
         database.ref('user1').update({"choice": option});
         // database.ref("/choice").update(option);
     });
 
     $(".choice2").on("click", function () {
-        playerchoose = "#choose2"
-        playerchosen = "#chosen2"
         choiceCount++
-        $("#chosen2").show();
-        $("#choose2").hide();
         option = this.id;
         database.ref('user2').update({"choice": option});
         // database.ref("/choice").update(option);
     });
+
+    // database.ref("/playerchosen").on('child_added', function (snapshot) {
+    //     if ($(playerchoose).is(':visible')) {
+    //         $(playerchoose).hide();
+    //         $(playerchosen).show();
+    //     } else {$(playerchosen).hide();
+    //         $(playerchoose).show();}
+    // });
