@@ -1,6 +1,6 @@
 // Initialize Firebase
 // TODO: Replace with your project's customized code snippet
-// var username = prompt("Enter your username")
+var username = "Player"
 var usersOnline = 0;
 var playerchoose = "";
 var playerchosen = "";
@@ -60,7 +60,7 @@ database.ref().on("value", function (snap) {
 connectionsRef.on("child_removed", function (snap) {
     usersOnline--
     database.ref("user1").update({
-        // "name": username,
+        "name": username,
         "winCount": 0,
         "lossCount": 0,
         "message": "",
@@ -74,6 +74,14 @@ database.ref("user1/choice").on("value", function (snapshot) {
         $("#choose1").hide();
         $("#chosen1").show();
     }
+});
+
+database.ref("user1/name").on("value", function (snapshot) {    
+    $(".user1").text(snapshot.val())
+});
+
+database.ref("user2/name").on("value", function (snapshot) {
+        $(".user2").text(snapshot.val())
 });
 
 database.ref("user2/choice").on("value", function (snapshot) {
@@ -91,7 +99,7 @@ database.ref().on("value", function (snapshot) {
     if (usersOnline === 1 && (!snapshot.child("user1").exists() || snapshot.numChildren() === 3)) {
         player = "user1"
         database.ref("user1").update({
-            // "name": username,
+            "name": "Player 1",
             "winCount": 0,
             "lossCount": 0,
             "message": "",
@@ -102,16 +110,21 @@ database.ref().on("value", function (snapshot) {
     else if (usersOnline === 2 && !snapshot.child("user2").exists()) {
         player = "user2"
         database.ref("user2").set({
-            // "name": username,
+            "name": "Player 2",
             "winCount": 0,
             "lossCount": 0,
             "message": "",
             "choice": "nothing"
-        })
+        });
+        $(".username").show();
         $("#connect2").hide();
         $("#connect1").hide();
         $("#choose2").show();
         $("#choose1").show();
+        $("#chosen1").hide();
+        database.ref("/user1").update({
+            "choice": "nothing"
+        });
     }
     if (choiceCount === 2 && snapshot.child("user2").exists()) {
         choiceCount = 2
@@ -224,18 +237,31 @@ $('#sendmessage').on('click', function () {
 
 }),
     // upon click of rock paper or scissors button it will send choice
-    $(".choice1").on("click", function () {
-        if (user === 1) {
-            choiceCount++
-            option = this.id;
-            database.ref('user1').update({ "choice": option });
-        }
-    });
+$(".choice1").on("click", function () {
+    if (user === 1) {
+        choiceCount++
+        option = this.id;
+        database.ref('user1').update({ "choice": option });
+    }
+});
 
 $(".choice2").on("click", function () {
     if (user === 2) {
         choiceCount++
         option = this.id;
         database.ref('user2').update({ "choice": option });
+    }
+});
+
+$("#username").on("click", function () {
+    if (user===1) {
+        username = $("#usertext").val()
+        database.ref("user1").update({"name": username})
+        $(".username").hide();
+    }
+    if (user===2) {
+        username = $("#usertext").val()
+        database.ref("user2").update({"name": username})
+        $(".username").hide();
     }
 });
